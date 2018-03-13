@@ -13,9 +13,10 @@ class usuario {
 		$result=$sql->select("SELECT * FROM tab_usuario WHERE deslogin=:LOGIN", array (":LOGIN"=>$login));
 
 		if (count($result) > 0) {
-			$row = $result[0];
-			$this->setDeslogin($row['deslogin']);
-			$this->setDessenha($row['desenha']);
+			$this->setData($result[0]);
+			//$row = $result[0];
+			//$this->setDeslogin($row['deslogin']);
+			//$this->setDessenha($row['desenha']);
 			//$this->setDtCadastro(new DateTime($row['dtcadastro']));
 		}
 	}
@@ -49,12 +50,7 @@ class usuario {
 			));
 
 		if (count($result) > 0) {
-			if (count($result) > 0) {
-			$row = $result[0];
-			$this->setDeslogin($row['deslogin']);
-			$this->setDessenha($row['desenha']);
-			//$this->setDtCadastro(new DateTime($row['dtcadastro']));
-			}
+				$this->setData($result[0]);
 		}
 		else {
 			throw new Exception("Login invalido!", 1);
@@ -62,7 +58,48 @@ class usuario {
 	}
 
 
-	public function __toString(){
+	public function setData($row){
+			$this->setDeslogin($row['deslogin']);
+			$this->setDessenha($row['desenha']);
+			//$this->setDtCadastro(new DateTime($row['dtcadastro']));
+	}
+
+	public function insert(){
+		$sql = new Sql();
+		$result=$sql->select("SELECT sp_usuarios_insert(:LOGIN, :PASSWORD)", array(
+			":LOGIN"=>$this->deslogin,
+			":PASSWORD"=>$this->dessenha
+			));
+			if (count($result) > 0) {
+				echo "\nSucesso na inclusao";
+			//	$this->setData($result[0]);
+			}
+	}
+
+
+	public function update($login, $senha) {
+		$this->setDeslogin($login);
+		$this->setDessenha($senha);
+
+		$sql = new Sql();
+		$result=$sql->query("UPDATE tab_usuario SET deslogin=:LOGIN WHERE desenha=:PASSWORD", array(
+			":LOGIN"=>$this->getDeslogin(),
+			":PASSWORD"=>$this->getDessenha()
+			));
+			if (count($result) > 0) {
+				echo "\nSucesso na alteracao";
+			//	$this->setData($result[0]);
+			}
+
+
+	}
+
+	public function __construct($login = "", $senha = ""){
+			$this->setDeslogin($login);			
+			$this->setDessenha($senha);
+	}
+
+	public function __toString() {
 		return json_encode(array(
 				"deslogin"=>$this->getDeslogin(),
 				"dessenha"=>$this->getDessenha()

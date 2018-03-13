@@ -20,5 +20,15 @@ $user = new usuario();
 $user->login("juliana", "123");
 echo $user;
 
+//$aluno = new usuario();
+//$aluno->setDeslogin("Adriano");
+//$aluno->setDessenha("senha");
+//$aluno->insert();
 
+$aluno = new usuario("Renan", "Tropico");
+$aluno->insert();
+echo $aluno;
+
+$user2 = new usuario();
+$user2->update("Maria", "123");
 ?>
