@@ -94,6 +94,20 @@ class usuario {
 
 	}
 
+
+	public function delete() {
+		$sql = new Sql();
+		$result=$sql->query("DELETE FROM tab_usuario WHERE deslogin=:LOGIN", array(
+			":LOGIN"=>$this->getDeslogin()
+			));
+			if (count($result) > 0) {
+				echo "\nSucesso na remocao";
+			//	$this->setData($result[0]);
+			}
+			$this->setDeslogin("");			
+			$this->setDessenha("");
+	}
+
 	public function __construct($login = "", $senha = ""){
 			$this->setDeslogin($login);			
 			$this->setDessenha($senha);
